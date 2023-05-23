@@ -5,7 +5,7 @@
  */
 package vistas;
 
-import control.GestorConsultarLlamada;
+import control.GestorConsultarEncuesta;
 import entidades.Llamada;
 import java.text.ParseException;
 import java.util.Date;
@@ -24,7 +24,7 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
     /**
      * Creates new form ConsultarEncuesta
      */
-    GestorConsultarLlamada gestorConsultarLlamada = new GestorConsultarLlamada();
+    GestorConsultarEncuesta gestorConsultarLlamada = new GestorConsultarEncuesta();
     public ConsultarEncuesta() throws ParseException {
         initComponents();
     }
@@ -147,14 +147,14 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
             return;
         }
 
-        gestorConsultarLlamada.buscarLlamadasPorFechas(fechaInicio, fechaFin); 
+        gestorConsultarLlamada.getLlamadasConEncuesta(fechaInicio, fechaFin); 
         
-        if (gestorConsultarLlamada.getLlamadasConEncuesta().isEmpty()) {
+        if (gestorConsultarLlamada.getLlamadasConEncuestaEncontradas().isEmpty()) {
     JOptionPane.showMessageDialog(this, "No hay Llamadas con encuesta respondida en el periodo seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
 }else {
         
         DefaultListModel<String> model = new DefaultListModel<>();
-    List<Llamada> llamadasFiltradas = gestorConsultarLlamada.getLlamadasConEncuesta();
+    List<Llamada> llamadasFiltradas = gestorConsultarLlamada.getLlamadasConEncuestaEncontradas();
 
     for (Llamada llamada : llamadasFiltradas) {
         model.addElement(gestorConsultarLlamada.mostrarLlamadasString(llamada)); // Asumiendo que tienes un método toString en la clase Llamada para obtener una representación en texto.
@@ -171,7 +171,7 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
     if (selectedIndex != -1) {
         // sObtener la llamada seleccionada
         
-        gestorConsultarLlamada.setLlamadaSeleccionada(gestorConsultarLlamada.getLlamadasConEncuesta().get(selectedIndex)); 
+        gestorConsultarLlamada.setLlamadaSeleccionada(gestorConsultarLlamada.getLlamadasConEncuestaEncontradas().get(selectedIndex)); 
 
         String mensaje = gestorConsultarLlamada.formatearLlamadaSelecionada(gestorConsultarLlamada.getLlamadaSeleccionada());
        
@@ -179,50 +179,32 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
         int option = JOptionPane.showOptionDialog(this, mensaje, "Detalles de la llamada", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,new Object[]{"Generar CSV", "Imprimir Archivo", "Cancelar"}, null);
 
         // Verificar la opción seleccionada
-        if (option == 0) {
-            String nombreArchivo = JOptionPane.showInputDialog(
-    this,
-    "Ingrese el nombre del archivo CSV:",
-    "Nombre del archivo",
-    JOptionPane.PLAIN_MESSAGE
-);
-
-if (nombreArchivo != null && !nombreArchivo.isEmpty()) {
-    gestorConsultarLlamada.generarCSV(nombreArchivo);
-    // Después de generar el CSV exitosamente
-    JOptionPane.showOptionDialog(
-        this,
-        "CSV generado con éxito.",
-        "Éxito",
-        JOptionPane.DEFAULT_OPTION,
-        JOptionPane.INFORMATION_MESSAGE,
-        null,
-        new Object[]{"Continuar"},
-        null
-    );
-} else if (nombreArchivo == null) {
-    // El usuario canceló el diálogo, no se muestra un mensaje de error
-} else {
-    JOptionPane.showOptionDialog(
-        this,
-        "Nombre del archivo CSV no ingresado.",
-        "Error",
-        JOptionPane.DEFAULT_OPTION,
-        JOptionPane.INFORMATION_MESSAGE,
-        null,
-        new Object[]{"Continuar"},
-        null
-    );
-}
-
-
-        } else if (option == 1) {
-            // Opción "Imprimir Archivo" seleccionada
-            // Agrega aquí la lógica para imprimir el archivo
-        } else if (option == 2) {
-    // Opción "Cancelar" seleccionada
-    System.exit(0); // Cierra la aplicación
-}  
+        switch (option) {
+            case 0:
+                gestorConsultarLlamada.generarCSV();
+                // Después de generar el CSV exitosamente
+                JOptionPane.showOptionDialog(
+                        this,
+                        "CSV generado con éxito.",
+                        "Éxito",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        null,
+                        new Object[]{"Continuar"},
+                        null
+                );
+                
+                break;
+        // Opción "Imprimir Archivo" seleccionada
+        // Agrega aquí la lógica para imprimir el archivo
+            case 1:
+                break;
+            case 2:
+                // Opción "Cancelar" seleccionada
+                System.exit(0); // Cierra la aplicación
+            default:
+                break;
+        }  
 
     } else {
         // No se seleccionó ninguna llamada

@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Brisa/DSI/ConsultarLlamada/ConsultarEncuesta/src/consultarencuesta/Main.java</file>
-            <file>file:/D:/Brisa/DSI/ConsultarLlamada/ConsultarEncuesta/src/entidades/Llamada.java</file>
-            <file>file:/D:/Brisa/DSI/ConsultarLlamada/ConsultarEncuesta/src/entidades/Pregunta.java</file>
-            <file>file:/D:/Brisa/DSI/ConsultarLlamada/ConsultarEncuesta/src/control/GestorConsultarLlamada.java</file>
-            <file>file:/D:/Brisa/DSI/ConsultarLlamada/ConsultarEncuesta/src/vistas/ConsultarEncuesta.java</file>
-            <file>file:/D:/Brisa/DSI/ConsultarLlamada/ConsultarEncuesta/src/entidades/Encuesta.java</file>
+            <file>file:/C:/Users/usuario/OneDrive/Documentos/NetBeansProjects/ConsultarEncuestasCU44/ConsultarEncuesta/src/entidades/Cliente.java</file>
+            <file>file:/C:/Users/usuario/OneDrive/Documentos/NetBeansProjects/ConsultarEncuestasCU44/ConsultarEncuesta/src/consultarencuesta/Main.java</file>
+            <file>file:/C:/Users/usuario/OneDrive/Documentos/NetBeansProjects/ConsultarEncuestasCU44/ConsultarEncuesta/src/entidades/Llamada.java</file>
+            <file>file:/C:/Users/usuario/OneDrive/Documentos/NetBeansProjects/ConsultarEncuestasCU44/ConsultarEncuesta/src/control/GestorConsultarEncuesta.java</file>
+            <file>file:/C:/Users/usuario/OneDrive/Documentos/NetBeansProjects/ConsultarEncuestasCU44/ConsultarEncuesta/src/vistas/ConsultarEncuesta.java</file>
+            <file>file:/C:/Users/usuario/OneDrive/Documentos/NetBeansProjects/ConsultarEncuestasCU44/ConsultarEncuesta/src/entidades/Estado.java</file>
         </group>
     </open-files>
 </project-private>
