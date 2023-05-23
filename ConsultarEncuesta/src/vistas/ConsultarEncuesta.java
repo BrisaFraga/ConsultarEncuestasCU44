@@ -169,7 +169,7 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
     
     // Verificar si se seleccionó una llamada
     if (selectedIndex != -1) {
-        // Obtener la llamada seleccionada
+        // sObtener la llamada seleccionada
         
         gestorConsultarLlamada.setLlamadaSeleccionada(gestorConsultarLlamada.getLlamadasConEncuesta().get(selectedIndex)); 
 
@@ -180,20 +180,40 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
 
         // Verificar la opción seleccionada
         if (option == 0) {
-            // Opción "Generar CSV" seleccionada
-            gestorConsultarLlamada.generarCSV();
-               // Después de generar el CSV exitosamente
-            JOptionPane.showOptionDialog(
-                this,
-                "CSV generado con éxito.",
-                "Éxito",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                new Object[]{"Continuar"},
-                null
-            );
-            
+            String nombreArchivo = JOptionPane.showInputDialog(
+    this,
+    "Ingrese el nombre del archivo CSV:",
+    "Nombre del archivo",
+    JOptionPane.PLAIN_MESSAGE
+);
+
+if (nombreArchivo != null && !nombreArchivo.isEmpty()) {
+    gestorConsultarLlamada.generarCSV(nombreArchivo);
+    // Después de generar el CSV exitosamente
+    JOptionPane.showOptionDialog(
+        this,
+        "CSV generado con éxito.",
+        "Éxito",
+        JOptionPane.DEFAULT_OPTION,
+        JOptionPane.INFORMATION_MESSAGE,
+        null,
+        new Object[]{"Continuar"},
+        null
+    );
+} else if (nombreArchivo == null) {
+    // El usuario canceló el diálogo, no se muestra un mensaje de error
+} else {
+    JOptionPane.showOptionDialog(
+        this,
+        "Nombre del archivo CSV no ingresado.",
+        "Error",
+        JOptionPane.DEFAULT_OPTION,
+        JOptionPane.INFORMATION_MESSAGE,
+        null,
+        new Object[]{"Continuar"},
+        null
+    );
+}
 
 
         } else if (option == 1) {

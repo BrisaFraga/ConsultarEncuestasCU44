@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- You may freely edit this file. See commented blocks below for --><!-- some examples of how to customize the build. --><!-- (If you delete it and reopen the project it will be recreated.) --><!-- By default, only the Clean and Build commands use this build script. --><project name="ConsultarEncuesta" default="default" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
     <description>Builds, tests, and runs the project ConsultarEncuesta.</description>
     <import file="nbproject/build-impl.xml"/>
+ <path id="classpath">
+        <pathelement location="C:/Users/usuario/OneDrive/Documentos/.jar para import/opencsv-5.7.1.jar" />
+        <!-- Reemplaza "/opencsv-5.5.1.jar" con la ubicación real del archivo JAR de OpenCSV -->
+    </path>
+
+    <target name="ejecutarOpenCSV">
+        <java classname="com.example.MainClass" classpathref="classpath" />
+        <!-- Reemplaza "com.example.MainClass" con la clase principal de tu aplicación que hace uso de OpenCSV -->
+    </target>
     <!--
 
     There exist several targets which are by default empty and which can be 
@@ -42,7 +51,7 @@
                 ...
             </fx:jar>
         </target>
-
+	
     For more details about JavaFX SDK Ant tasks go to
     http://docs.oracle.com/javafx/2/deployment/jfxpub-deployment.htm
 

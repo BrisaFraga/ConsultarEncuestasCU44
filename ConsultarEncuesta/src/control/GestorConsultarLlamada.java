@@ -68,19 +68,18 @@ public class GestorConsultarLlamada {
         cambios.add(new CambioEstado(new Estado("En Curso")));
         cambios.add(new CambioEstado(new Estado("Finalizada")));
         //preguntas pruebas para armar encuesta 
-        Set<Pregunta> preguntas = new HashSet();
-        Pregunta pregunta = new Pregunta("¿El problema se soluciono?");
+        ArrayList<Pregunta> preguntas = new ArrayList();
+        Pregunta pregunta = new Pregunta("¿La atencion del operador fue agradable?");
         pregunta.agregarRespuesta(new RespuestaPosible(1,"Si"));
         pregunta.agregarRespuesta(new RespuestaPosible(2,"No"));
         preguntas.add(pregunta);
-        pregunta.setPregunta("¿La atencion del operador fue agradable?");
-        preguntas.add(pregunta);
+      
         //encuetsa prueba
         Encuesta encuesta = new Encuesta("11/05/2023 12:00:00", preguntas,"Encuesta para saber la conformidad del cliente con la atencion y resolucion del problema");
-        //respuestas de encuesta prueba solo realizare 2
+        //respuestas de encuesta prueba solo realizare 1
         ArrayList<RespuestaDeCliente> respuestas = new ArrayList();
         respuestas.add(new RespuestaDeCliente(new Date(),new RespuestaPosible(1,"Si")));
-        respuestas.add(new RespuestaDeCliente(new Date(),new RespuestaPosible(2,"No")));
+       
         
         //llamadas de prueba
         llamadas = new ArrayList<>();
@@ -88,7 +87,6 @@ public class GestorConsultarLlamada {
         llamadas.add(new Llamada("11/05/2023 12:02:02","11/05/2023 13:00:00",encuesta,respuestas, cliente, cambios));
         llamadas.add(new Llamada("20/05/2023 12:02:02","20/05/2023 13:00:00",encuesta,respuestas, cliente, cambios));
         llamadas.add(new Llamada("12/05/2023 12:02:02","13/05/2023 13:00:00",encuesta, cliente, cambios));
-
         this.llamadaSeleccionada = new Llamada();
         this.llamadasFiltradas = new ArrayList();
     }
@@ -123,7 +121,7 @@ public class GestorConsultarLlamada {
 
         // Obtener los datos de las respuestas asociadas a la llamada
         ArrayList<RespuestaDeCliente> respuestas = llamadaSeleccionada.getRespuestasDeEncuesta();
-        Set<Pregunta> preguntas = llamadaSeleccionada.getEncuestaEnviada().getPreguntas();
+        ArrayList<Pregunta> preguntas = (ArrayList<Pregunta>) llamadaSeleccionada.getEncuestaEnviada().getPreguntas();
         String respuestasSeleccionadas = "";
         String descripcionPreguntas = "";
         String descripcionEncuesta = llamadaSeleccionada.getEncuestaEnviada().getDescripcion();
@@ -151,12 +149,13 @@ public class GestorConsultarLlamada {
     return mensaje;}
     
     
-    //generar csv
-    public void generarCSV() {
+   
+        //generar csv
+public void generarCSV(String nombreArchivo) {
     // Ruta del archivo CSV a generar
-    String archivoCSV = "C:/Users/usuario/OneDrive/Escritorio/CSVGenerados/Llamada.csv";
+    String archivoCSV = "C:/Users/usuario/OneDrive/Escritorio/CSVGenerados/" + nombreArchivo + ".csv";
 
-    try (CSVWriter csvWriter = new CSVWriter(new FileWriter(archivoCSV))) {
+    try (CSVWriter csvWriter = new CSVWriter(new FileWriter(archivoCSV), '|', CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
         // Escribir encabezados
         String[] encabezados = {"Nombre del cliente", "Estado actual de la llamada", "Duración de la llamada"};
         csvWriter.writeNext(encabezados);
@@ -172,18 +171,17 @@ public class GestorConsultarLlamada {
         csvWriter.writeNext(filaLlamada);
 
         // Obtener las preguntas y respuestas asociadas a la llamada
-        Set<Pregunta> preguntas = llamada.getEncuestaEnviada().getPreguntas();
+        ArrayList<Pregunta> preguntas = llamada.getEncuestaEnviada().getPreguntas();
         ArrayList<RespuestaDeCliente> respuestas = llamada.getRespuestasDeEncuesta();
-           int cont = 0;
+        int cont = 0;
+
         // Escribir las preguntas y respuestas en filas separadas
         for (Pregunta pregunta : preguntas) {
             String descripcionPregunta = pregunta.getPregunta();
             String descripcionRespuesta = respuestas.get(cont).getRespuestaSeleccionada().toString();
 
-           
-            
-            
             cont += 1;
+
             // Escribir fila de datos de la pregunta y respuesta
             String[] filaPregunta = {descripcionPregunta, descripcionRespuesta};
             csvWriter.writeNext(filaPregunta);
@@ -192,6 +190,7 @@ public class GestorConsultarLlamada {
         // Flushing y cerrando el escritor de CSV
         csvWriter.flush();
     } catch (IOException e) {
+        e.printStackTrace();
     }
 }
 

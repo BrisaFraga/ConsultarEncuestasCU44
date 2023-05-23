@@ -7,6 +7,7 @@ package entidades;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,10 +17,10 @@ import java.util.Set;
  */
 public class Encuesta {
     private Date fechaFinVigencia;
-    public Set<Pregunta> preguntas;
+    public ArrayList<Pregunta> preguntas;
     private String descripcion;
     
- public Encuesta(String fechaFinVigenciaString, Set<Pregunta> preguntas, String descripcion) {
+ public Encuesta(String fechaFinVigenciaString, ArrayList<Pregunta> preguntas, String descripcion) {
         this.preguntas = preguntas;
         this.descripcion = descripcion;
         
@@ -46,11 +47,12 @@ public void setFechaFinVigencia(String fechaFinVigenciaString, String formatoFec
             
         }
     }
-    public Set<Pregunta> getPreguntas() {
+
+    public ArrayList<Pregunta> getPreguntas() {
         return preguntas;
     }
 
-    public void setPreguntas(Set<Pregunta> preguntas) {
+    public void setPreguntas(ArrayList<Pregunta> preguntas) {
         this.preguntas = preguntas;
     }
 
