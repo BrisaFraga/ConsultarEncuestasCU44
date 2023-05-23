@@ -224,11 +224,9 @@ public class GestorConsultarEncuesta {
 public void generarCSV() {
     // Ruta del archivo CSV a generar
    // String archivoCSV = "C:/Users/usuario/OneDrive/Escritorio/CSVGenerados/" + nombreArchivo + ".csv";
-     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
-     SimpleDateFormat sdfH = new SimpleDateFormat("HH-mm-ss");
+     SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yy");
         String fechaInicioStr = sdf.format(llamadaSeleccionada.getFechaHoraInicio());
-        String horaInicio = sdfH.format(llamadaSeleccionada.getFechaHoraInicio());
-    String archivoCSV = "C:/Users/usuario/OneDrive/Escritorio/CSVGenerados/Llamada_" + cliente.getDni()+"_Fecha:"+fechaInicioStr+"_Hora:"+horaInicio+".csv";
+    String archivoCSV = "C:/Users/usuario/OneDrive/Escritorio/CSVGenerados/Llamada_" + cliente.getDni()+"_Fecha_"+fechaInicioStr+".csv";
 
      try (CSVWriter csvWriter = new CSVWriter(new FileWriter(archivoCSV), '|', CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
         // Escribir encabezados

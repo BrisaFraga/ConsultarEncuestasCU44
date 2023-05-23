@@ -5,6 +5,7 @@
  */
 package consultarencuesta;
 
+import control.GestorConsultarEncuesta;
 import java.text.ParseException;
 import vistas.ConsultarEncuesta;
 
