@@ -150,8 +150,11 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
         gestorConsultarLlamada.getLlamadasConEncuesta(fechaInicio, fechaFin); 
         
         if (gestorConsultarLlamada.getLlamadasConEncuestaEncontradas().isEmpty()) {
+             DefaultListModel<String> emptyModel = new DefaultListModel<>();
+        listLlamadas.setModel(emptyModel);
     JOptionPane.showMessageDialog(this, "No hay Llamadas con encuesta respondida en el periodo seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
-}else {
+       
+        }else {
         
         DefaultListModel<String> model = new DefaultListModel<>();
     List<Llamada> llamadasFiltradas = gestorConsultarLlamada.getLlamadasConEncuestaEncontradas();
@@ -173,7 +176,7 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
         
         gestorConsultarLlamada.setLlamadaSeleccionada(gestorConsultarLlamada.getLlamadasConEncuestaEncontradas().get(selectedIndex)); 
 
-        String mensaje = gestorConsultarLlamada.formatearLlamadaSelecionada(gestorConsultarLlamada.getLlamadaSeleccionada());
+        String mensaje = gestorConsultarLlamada.formatearLlamadaSelecionada();
        
         // Mostrar el mensaje en una ventana emergente con botones
         int option = JOptionPane.showOptionDialog(this, mensaje, "Detalles de la llamada", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null,new Object[]{"Generar CSV", "Imprimir Archivo", "Cancelar"}, null);

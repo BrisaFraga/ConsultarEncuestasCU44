@@ -5,6 +5,7 @@
  */
 package entidades;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,7 +16,14 @@ import java.util.Date;
 public class CambioEstado {
     private Date fechaHoraInicio;
     private Estado estado;
-
+    
+    public CambioEstado(String fecha,Estado estado) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date fechaInicioStr = dateFormat.parse(fecha);
+        this.fechaHoraInicio = fechaInicioStr;
+        this.estado = estado;
+    }
+    
     public CambioEstado(Estado estado) {
         this.fechaHoraInicio = new Date();
         this.estado = estado;

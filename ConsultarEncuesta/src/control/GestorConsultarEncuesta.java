@@ -30,7 +30,7 @@ import java.util.Set;
 public class GestorConsultarEncuesta {
     //el arraList llamadas donde cargamos Llamadas porque no usamos bda
     public ArrayList<Llamada> llamadas;
-    private ArrayList<Llamada> llamadasFiltradas;
+    private ArrayList<Llamada> llamadasConEncuestasEncontradas;
     public Llamada llamadaSeleccionada;
     public Cliente cliente;
     public Estado estadoActual;
@@ -108,11 +108,11 @@ public class GestorConsultarEncuesta {
     }
 
     public ArrayList<Llamada> getLlamadasConEncuestaEncontradas() {
-        return llamadasFiltradas;
+        return llamadasConEncuestasEncontradas;
     }
 
     public void setLlamadasConEncuestaEncontradas(ArrayList<Llamada> llamadasFiltradas) {
-        this.llamadasFiltradas = llamadasFiltradas;
+        this.llamadasConEncuestasEncontradas = llamadasFiltradas;
     }
     
     
@@ -123,9 +123,19 @@ public class GestorConsultarEncuesta {
         Cliente cliente0= new Cliente("Brisa Fraga", 43556677L, 3567845876L);
         Cliente cliente1= new Cliente("Vale Mazan", 47987653L, 3567845876L);
        //array de cambios estados de prueba
-        ArrayList<CambioEstado> cambios = new ArrayList();
-        cambios.add(new CambioEstado(new Estado("En Curso")));
-        cambios.add(new CambioEstado(new Estado("Finalizada")));
+        ArrayList<CambioEstado> cambios1 = new ArrayList();
+        cambios1.add(new CambioEstado("10/05/2023 12:02:02",new Estado("En Curso")));
+        cambios1.add(new CambioEstado("11/05/2023 12:02:02",new Estado("Finalizada")));
+        ArrayList<CambioEstado> cambios2 = new ArrayList();
+        cambios2.add(new CambioEstado("11/05/2023 12:02:02",new Estado("En Curso")));
+        cambios2.add(new CambioEstado("11/05/2023 13:02:02",new Estado("Finalizada")));
+        cambios2.add(new CambioEstado("11/05/2023 13:02:02",new Estado("Encuesta Enviada")));
+        
+        ArrayList<CambioEstado> cambios3 = new ArrayList();
+        cambios3.add(new CambioEstado("20/05/2023 12:02:02",new Estado("En Curso")));
+        cambios3.add(new CambioEstado("20/05/2023 13:02:02",new Estado("Finalizada")));
+        
+
         //preguntas pruebas para armar encuesta 
         ArrayList<Pregunta> preguntasPrueba = new ArrayList();
         Pregunta pregunta = new Pregunta("¿La atencion del operador fue agradable?");
@@ -142,60 +152,53 @@ public class GestorConsultarEncuesta {
         
         //llamadas de prueba
         llamadas = new ArrayList<>();
-        llamadas.add(new Llamada("10/05/2023 12:02:02","10/05/2023 13:00:00",encuestaPrueba,respuestasPrueba, cliente0, cambios));
-        llamadas.add(new Llamada("11/05/2023 12:02:02","11/05/2023 13:00:00",encuestaPrueba,respuestasPrueba, cliente1, cambios));
-        llamadas.add(new Llamada("20/05/2023 12:02:02","20/05/2023 13:00:00",encuestaPrueba,respuestasPrueba, cliente0, cambios));
-        llamadas.add(new Llamada("12/05/2023 12:02:02","13/05/2023 13:00:00",encuestaPrueba, cliente1, cambios));
+        llamadas.add(new Llamada(encuestaPrueba,respuestasPrueba, cliente0, cambios1));
+        llamadas.add(new Llamada(encuestaPrueba,respuestasPrueba, cliente1, cambios2));
+        llamadas.add(new Llamada(encuestaPrueba,respuestasPrueba, cliente0, cambios3));
+        llamadas.add(new Llamada(encuestaPrueba, cliente1, cambios1));
+        
+        for (Llamada llamada : llamadas){
+            llamada.calcularDuracion();
+        }
         this.llamadaSeleccionada = new Llamada();
-        this.llamadasFiltradas = new ArrayList();
+        this.llamadasConEncuestasEncontradas = new ArrayList();
     }
 
-   public boolean esDePeriodo(Date fechaInicio, Date fechaFin, Llamada llamada){
-        return llamada.getFechaHoraInicio().after(fechaInicio) && llamada.getFechaHoraInicio().before(fechaFin);
-       
-   }
-   public boolean existeRespuestaDeEncuesta(Llamada llamada){
-        return llamada.getRespuestasDeEncuesta() != null;
-    }
+    //PONERLO EN LLAMADA Y SE BUSCA EL INICIO DE LA LLAMADA POR CAMBIOS DE ESTADO, corregir 
+    
+   
     public void getLlamadasConEncuesta(Date fechaInicio, Date fechaFin) {
         ArrayList<Llamada> llamadasEncontradas = new ArrayList<>();
         for (Llamada llamada : llamadas) {
-            if (esDePeriodo(fechaInicio,fechaFin,llamada)   ) {
-                if (existeRespuestaDeEncuesta(llamada)){
+            if (llamada.esDePeriodo(fechaInicio,fechaFin) ) {
+                if (llamada.existeRespuestaDeEncuesta()){
             
                 llamadasEncontradas.add(llamada);
             } }
         }
-        llamadasFiltradas =llamadasEncontradas;
+        llamadasConEncuestasEncontradas = llamadasEncontradas;
     }
 
-     public static Estado getEstadoActual(Llamada llamada){
-        Estado estadito ;
-        ArrayList <CambioEstado> cambios= llamada.getCambiosEstado();
-        
-        estadito = cambios.get(cambios.size()-1).getEstado();
-        
-        return estadito;
-    }
-     
-    public String formatearLlamadaSelecionada(Llamada llamadaSelecionada){
+    public void getDatosLlamadaSeleccionada(){
     // Obtener los datos de la llamada
         this.cliente= llamadaSeleccionada.getCliente();
-        this.estadoActual= getEstadoActual(llamadaSeleccionada);
+        //cambiar el metodo get estado actual
+        this.estadoActual= llamadaSeleccionada.getEstadoActual();
         this.duracion = llamadaSeleccionada.getDuracion();
         this.encuesta = llamadaSeleccionada.getEncuestaEnviada();
+        //PEGUNTAR A SOL QUE FALTA AQUI CAMBIAR 
         this.preguntas = encuesta.getPreguntas();
         this.respuestas = llamadaSeleccionada.getRespuestasDeEncuesta();
-        
-        //String cliente = this.cliente.getNombreCompleto();
-        //String estadoActual = this.estadoActual.toString();
-        //float duracionLlamada = llamadaSeleccionada.getDuracion();
-
-        // Obtener los datos de las respuestas asociadas a la llamada
+    }
+     
+    public String formatearLlamadaSelecionada(){
+           // Obtener los datos de las respuestas asociadas a la llamada
         String respuestasSeleccionadas = "";
         String descripcionPreguntas = "";
         
         int cont = 0 ;
+        
+        
         for (RespuestaDeCliente respuesta : respuestas) {
             cont += 1;
             respuestasSeleccionadas += cont +" Respuesta: "+ respuesta.getRespuestaSeleccionada() + " \n";
@@ -224,8 +227,8 @@ public class GestorConsultarEncuesta {
 public void generarCSV() {
     // Ruta del archivo CSV a generar
    // String archivoCSV = "C:/Users/usuario/OneDrive/Escritorio/CSVGenerados/" + nombreArchivo + ".csv";
-     SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yy");
-        String fechaInicioStr = sdf.format(llamadaSeleccionada.getFechaHoraInicio());
+    SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yy");
+    String fechaInicioStr = sdf.format(llamadaSeleccionada.getFechaHoraInicioLlamada());
     String archivoCSV = "C:/Users/usuario/OneDrive/Escritorio/CSVGenerados/Llamada_" + cliente.getDni()+"_Fecha_"+fechaInicioStr+".csv";
 
      try (CSVWriter csvWriter = new CSVWriter(new FileWriter(archivoCSV), '|', CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END)) {
@@ -264,8 +267,8 @@ public void generarCSV() {
 
     public String mostrarLlamadasString(Llamada llamada) {
           SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        String fechaInicioStr = sdf.format(llamada.fechaHoraInicio);
-        String fechaFinStr = sdf.format(llamada.fechaHoraFin);
+        String fechaInicioStr = sdf.format(llamada.getFechaHoraInicioLlamada());
+        String fechaFinStr = sdf.format(llamada.getFechaHoraFin());
         return "Llamada: " +  " Cliente: [" + llamada.cliente + "] | Duracion: " + llamada.Duracion + " | fechaHoraInicio: " + fechaInicioStr + " | fechaHoraFin: " + fechaFinStr ;
     
     }
