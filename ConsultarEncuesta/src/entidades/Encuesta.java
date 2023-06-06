@@ -52,6 +52,18 @@ public void setFechaFinVigencia(String fechaFinVigenciaString, String formatoFec
         return preguntas;
     }
 
+    public ArrayList<String> getPreguntasToString() {
+        int cont = 0;
+        
+       ArrayList <String> preguntasString = new ArrayList();
+        for (Pregunta pregunta : preguntas){
+        cont += 1;
+        preguntasString.add(cont +" Pregunta: "+ pregunta.getPregunta() + " \n");
+        
+        }
+        return preguntasString;
+    }
+
     public void setPreguntas(ArrayList<Pregunta> preguntas) {
         this.preguntas = preguntas;
     }

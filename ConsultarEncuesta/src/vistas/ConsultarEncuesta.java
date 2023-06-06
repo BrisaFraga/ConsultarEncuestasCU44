@@ -175,7 +175,7 @@ public class ConsultarEncuesta extends javax.swing.JFrame {
         // sObtener la llamada seleccionada
         
         gestorConsultarLlamada.setLlamadaSeleccionada(gestorConsultarLlamada.getLlamadasConEncuestaEncontradas().get(selectedIndex)); 
-
+        gestorConsultarLlamada.getDatosLlamadaSeleccionada();
         String mensaje = gestorConsultarLlamada.formatearLlamadaSelecionada();
        
         // Mostrar el mensaje en una ventana emergente con botones

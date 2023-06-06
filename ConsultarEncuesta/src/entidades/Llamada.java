@@ -74,10 +74,7 @@ public class Llamada {
     }
 
     
-    public Date getFechaHoraFin() {
-        return cambiosEstado.get(cambiosEstado.size()-1).getFechaHoraInicio();
-        
-    }
+    
 
     public Encuesta getEncuestaEnviada() {
         return encuestaEnviada;
@@ -100,8 +97,10 @@ public class Llamada {
 
         
    
-       
-   
+    public Date getFechaHoraFin() {
+        return cambiosEstado.get(cambiosEstado.size()-1).getFechaHoraInicio();
+        
+    }  
 
 
     public Date getFechaHoraInicioLlamada() {
@@ -117,6 +116,19 @@ public class Llamada {
         return getRespuestasDeEncuesta() != null;
     }
 
+    public ArrayList<String> getRespuestasDeClienteToString(){
+    int  cont = 0 ;
+        
+       ArrayList <String> respuestas = new ArrayList();
+
+       for (RespuestaDeCliente respuesta : respuestasDeEncuesta) {
+            cont += 1;
+            respuestas.add(cont +" Respuesta: "+ respuesta.getRespuestaSeleccionada().getDescripcion() + " \n");
+        }
+        return respuestas;
+    }
+    
+    
    public Estado getEstadoActual(){
         Estado estadito ;
         
@@ -136,7 +148,7 @@ public class Llamada {
 
     public void calcularDuracion() {
         long duracionMillis = getFechaHoraFin().getTime() - getFechaHoraInicioLlamada().getTime();
-        this.Duracion = duracionMillis / 1000f;
+        this.Duracion = duracionMillis / 1000f / 60f;
     }
 
     @Override

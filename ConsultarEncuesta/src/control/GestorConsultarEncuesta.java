@@ -33,10 +33,10 @@ public class GestorConsultarEncuesta {
     private ArrayList<Llamada> llamadasConEncuestasEncontradas;
     public Llamada llamadaSeleccionada;
     public Cliente cliente;
-    public Estado estadoActual;
+    public String estadoActual;
     public Encuesta encuesta;
-    public ArrayList<Pregunta> preguntas;
-    public ArrayList <RespuestaDeCliente> respuestas;
+    public ArrayList<String> preguntas;
+    public ArrayList <String> respuestas;
     public Float duracion;
 
     public Cliente getCliente() {
@@ -47,11 +47,11 @@ public class GestorConsultarEncuesta {
         this.cliente = cliente;
     }
 
-    public Estado getEstadoActual() {
+    public String getEstadoActual() {
         return estadoActual;
     }
 
-    public void setEstadoActual(Estado estadoActual) {
+    public void setEstadoActual(String estadoActual) {
         this.estadoActual = estadoActual;
     }
 
@@ -63,19 +63,19 @@ public class GestorConsultarEncuesta {
         this.encuesta = encuesta;
     }
 
-    public ArrayList<Pregunta> getPreguntas() {
+    public ArrayList<String> getPreguntas() {
         return preguntas;
     }
 
-    public void setPreguntas(ArrayList<Pregunta> preguntas) {
+    public void setPreguntas(ArrayList<String> preguntas) {
         this.preguntas = preguntas;
     }
 
-    public ArrayList<RespuestaDeCliente> getRespuestas() {
+    public ArrayList<String> getRespuestas() {
         return respuestas;
     }
 
-    public void setRespuestas(ArrayList<RespuestaDeCliente> respuestas) {
+    public void setRespuestas(ArrayList<String> respuestas) {
         this.respuestas = respuestas;
     }
 
@@ -183,39 +183,30 @@ public class GestorConsultarEncuesta {
     // Obtener los datos de la llamada
         this.cliente= llamadaSeleccionada.getCliente();
         //cambiar el metodo get estado actual
-        this.estadoActual= llamadaSeleccionada.getEstadoActual();
+        this.estadoActual= llamadaSeleccionada.getEstadoActual().getNombre();
         this.duracion = llamadaSeleccionada.getDuracion();
         this.encuesta = llamadaSeleccionada.getEncuestaEnviada();
         //PEGUNTAR A SOL QUE FALTA AQUI CAMBIAR 
-        this.preguntas = encuesta.getPreguntas();
-        this.respuestas = llamadaSeleccionada.getRespuestasDeEncuesta();
+        this.preguntas = encuesta.getPreguntasToString();
+        this.respuestas = llamadaSeleccionada.getRespuestasDeClienteToString();
+      
+       
+       
     }
      
     public String formatearLlamadaSelecionada(){
-           // Obtener los datos de las respuestas asociadas a la llamada
-        String respuestasSeleccionadas = "";
-        String descripcionPreguntas = "";
+           // Obtener los datos de las respuestas asociadas a la llamada     
         
-        int cont = 0 ;
+       
         
-        
-        for (RespuestaDeCliente respuesta : respuestas) {
-            cont += 1;
-            respuestasSeleccionadas += cont +" Respuesta: "+ respuesta.getRespuestaSeleccionada() + " \n";
-        }
-        cont = 0;
-        for (Pregunta pregunta : preguntas){
-        cont += 1;
-        descripcionPreguntas += cont +" Pregunta: "+ pregunta.getPregunta() + " \n";
-        }
         // Crear el mensaje a mostrar en la ventana emergente
-        String mensaje = "Cliente: " + cliente.toString() + "\n"
-                + "Estado actual: " + estadoActual.getNombre() + "\n"
+        String mensaje = "Cliente: " + cliente.getNombreCompleto() + "\n"
+                + "Estado actual: " + estadoActual + "\n"
                 + "Duración de la llamada: " + duracion + " minutos\n\n"
                 
                 + " - Encuesta: \nDescripción de la encuesta: " + encuesta.getDescripcion() +"\n"
-                + "Descripción de las preguntas: \n " + descripcionPreguntas + "\n"
-                + "Respuestas seleccionadas: \n" + respuestasSeleccionadas + "\n";
+                + "Descripción de las preguntas: \n " + preguntas + "\n"
+                + "Respuestas seleccionadas: \n" + respuestas  + "\n";
                 
                 
 
@@ -241,16 +232,17 @@ public void generarCSV() {
       
 
         // Escribir fila de datos de la llamada
-        String[] filaLlamada = {cliente.getNombreCompleto(), estadoActual.toString(), String.valueOf(duracion)};
+        String[] filaLlamada = {cliente.getNombreCompleto(), estadoActual, String.valueOf(duracion)};
         csvWriter.writeNext(filaLlamada);
 
         // Obtener las preguntas y respuestas asociadas a la llamada
         int cont = 0;
 
         // Escribir las preguntas y respuestas en filas separadas
-        for (Pregunta pregunta : preguntas) {
-            String descripcionPregunta = pregunta.getPregunta();
-            String descripcionRespuesta = respuestas.get(cont).getRespuestaSeleccionada().toString();
+        for (String pregunta : preguntas) {
+            String descripcionPregunta = pregunta;
+            
+            String descripcionRespuesta = respuestas.get(cont);
 
             cont += 1;
 
