@@ -16,8 +16,7 @@ import java.util.Date;
  * @author Brisa
  */
 public class Llamada {
-    public float Duracion;
-   
+    public float Duracion;   
     private Encuesta encuestaEnviada;
     public ArrayList<RespuestaDeCliente> respuestasDeEncuesta;
     public Cliente cliente;

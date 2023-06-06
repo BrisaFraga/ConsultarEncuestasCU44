@@ -30,6 +30,7 @@ import java.util.Set;
 public class GestorConsultarEncuesta {
     //el arraList llamadas donde cargamos Llamadas porque no usamos bda
     public ArrayList<Llamada> llamadas;
+    
     private ArrayList<Llamada> llamadasConEncuestasEncontradas;
     public Llamada llamadaSeleccionada;
     public Cliente cliente;
@@ -239,6 +240,7 @@ public void generarCSV() {
         int cont = 0;
 
         // Escribir las preguntas y respuestas en filas separadas
+         System.out.println(preguntas);
         for (String pregunta : preguntas) {
             String descripcionPregunta = pregunta;
             
